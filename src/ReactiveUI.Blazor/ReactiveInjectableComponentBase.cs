@@ -48,6 +48,11 @@ public class ReactiveInjectableComponentBase<T> : ComponentBase, IViewFor<T>, IN
             }
 
             _viewModel = value;
+            if (_viewModel is IActivatableViewModel avm)
+            {
+                Activated.Subscribe(_ => avm.Activator.Activate());
+                Deactivated.Subscribe(_ => avm.Activator.Deactivate());
+            }
             OnPropertyChanged();
         }
     }
